@@ -32,8 +32,21 @@ jobs:
       - name: Type check
         run: npm run check
 
-      - name: Build project
+      # 1. Run the first script (Raw build, no compression)
+      - name: Build raw worker
         run: npm run build
+        # Make sure your package.json "build" script points to your first script (e.g., node scripts/build.js)
+
+      # 2. Prepare the 'process' folder and move the raw file there
+      - name: Prepare process folder
+        run: |
+          mkdir -p process
+          cp dist/worker.js process/worker.js
+
+      # 3. Run the second script (Secure build with compression)
+      - name: Build secure worker
+        run: node scripts/build-secure.js
+        # Note: Change 'scripts/build-secure.js' to the actual path where you saved the secure build script.
 
       - name: Read release note
         id: read_release
@@ -45,6 +58,7 @@ jobs:
           r="${r//$'\r'/'%0D'}"                             
           echo "RELEASE_BODY=$r" >> $GITHUB_OUTPUT
 
+      # 4. Upload the final secured build from the 'dist' folder
       - name: Upload Release Assets
         uses: svenstaro/upload-release-action@v2
         with:
