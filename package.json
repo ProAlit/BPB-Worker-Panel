@@ -5,11 +5,12 @@
 	"license": "GPL-3.0",
 	"private": true,
 	"type": "module",
-	"scripts": {
-	  "build:raw": "node scripts/build.js",
-	  "build:secure": "node scripts/build-secure.js",
-	  "build": "npm run build:raw && npm run build:secure"
-	}
+  "scripts": {
+    "check": "tsc --noEmit",
+    "build": "npm run build:raw && npm run build:secure",
+    "build:raw": "node scripts/build.js",
+    "build:secure": "node scripts/build-secure.js"
+  },
 	"devDependencies": {
 		"@cloudflare/workers-types": "^4.20260603.1",
 		"@eslint/css": "^1.3.0",
